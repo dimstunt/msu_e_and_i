@@ -84,8 +84,12 @@ class ConnectionManager:
         return http
 
 
-if __name__ == '__main__':
+def main():
     print("Testing changing ip")
     cm = ConnectionManager(3)
     for i in range(15):
         print("{i} ip: {ip}".format(i=i, ip=cm.request("http://icanhazip.com/").text.strip()))
+
+
+if __name__ == '__main__':
+    main()

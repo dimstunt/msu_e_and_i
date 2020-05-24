@@ -12,6 +12,7 @@ class ShikimoriParser(ConnectionManager):
     def __init__(self):
         super().__init__()
         self.cm = ConnectionManager()
+        self.cm._change_ip()
 
     def parse_anime_list(self, pn):
         """
