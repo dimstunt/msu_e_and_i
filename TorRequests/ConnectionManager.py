@@ -42,7 +42,7 @@ class ConnectionManager:
         with Controller.from_port(port=9051) as controller:
             while self.__old_ip == self.__new_ip and tries <= 10:
                 # TODO добавить логгирование
-                print("Changing IP: {tires} try".format(tires=tries + 1))
+                print("\tChanging IP: {tires} try".format(tires=tries + 1))
                 if tries != 0:
                     time.sleep(2)
                 controller.authenticate(password='dimstunt_local')
@@ -53,7 +53,7 @@ class ConnectionManager:
                 self.__new_ip = self._check_ip()
                 tries += 1
             # TODO добавить обработку неудачи смены ip
-            print("Success, total {tries} tries".format(tries=tries))
+            print("\tSuccess, total {tries} tries".format(tries=tries))
 
     def request(self, url):
         """
@@ -65,7 +65,7 @@ class ConnectionManager:
             self.__new_ip = self._check_ip()
         if self.__request_counter >= self.count_of_requests:
             # TODO добавить логгирование
-            print("Count of requests: {count}, changing IP".format(count=self.__request_counter))
+            print("\tCount of requests: {count}, changing IP".format(count=self.__request_counter))
             self._change_ip()
         tries = 1
         while (
@@ -73,7 +73,7 @@ class ConnectionManager:
                 or (tries == 5)
         ):
             # TODO добавить логгирование
-            print(("Count of requests: {count}, "
+            print(("\tCount of requests: {count}, "
                    "get status_code={error}, "
                    "{tries} try to solve by changing IP")
                   .format(count=self.__request_counter, error=http.status_code, tries=tries))

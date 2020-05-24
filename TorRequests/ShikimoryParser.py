@@ -40,7 +40,7 @@ class ShikimoriParser(ConnectionManager):
                     kv['href'] = href['href'].replace(u'\xa0', u' ').strip('')
                 al.append(kv)
         except Exception as e:
-            print("error in {site}{page}: {e}".format(e=e, site=site, page=pn))
+            print("\terror in {site}{page}: {e}".format(e=e, site=site, page=pn))
             # TODO обработать ошибки
         return html, al
 

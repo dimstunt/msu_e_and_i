@@ -10,6 +10,8 @@ PAGE_NUM_LAST = 704
 shikimori_parser = ShikimoriParser()
 anime_list = []
 bad_html_list = []
+
+print("Парсим страницы со списком аниме")
 for page_num in range(PAGE_NUM_FIRST, PAGE_NUM_LAST + 1):
     print("Страница: {page_num} из {page_num_last}".format(page_num=page_num, page_num_last=PAGE_NUM_LAST))
     res_html, res_json_list = shikimori_parser.parse_anime_list(page_num)
@@ -20,6 +22,7 @@ for page_num in range(PAGE_NUM_FIRST, PAGE_NUM_LAST + 1):
         else:
             anime_list.append(res_json)
         if bad_html_flg:
+            print("\tНа странице {page_num} нет ссылок на аниме".format(page_num=page_num))
             bad_html_list.append(res_html)
 
 
