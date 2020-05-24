@@ -8,6 +8,13 @@ import requests
 from stem import Signal
 from stem.control import Controller
 
+module_logger = logging.getLogger('ConnectionManager')
+module_logger.setLevel(logging.INFO)
+fh = logging.FileHandler('log/ConnectionManager.log', mode='w')
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+fh.setFormatter(formatter)
+module_logger.addHandler(fh)
+
 
 class ConnectionManager:
     """
@@ -43,7 +50,6 @@ class ConnectionManager:
         tries = 0
         with Controller.from_port(port=9051) as controller:
             while self.__old_ip == self.__new_ip and tries <= 10:
-                # TODO добавить логгирование
                 logger.info(msg=f'Changing IP: {tries + 1} try')
                 if tries != 0:
                     time.sleep(2)
@@ -67,18 +73,17 @@ class ConnectionManager:
         if self.__new_ip == '0.0.0.0':
             self.__new_ip = self._check_ip()
         if self.__request_counter >= self.count_of_requests:
-            # TODO добавить логгирование
             logger.info(msg=f'Count of requests: {self.__request_counter}, changing IP')
             self._change_ip()
         tries = 1
+        logger.info(msg=f'url: {url}')
         while (
                 (http := requests.get(url, headers=self.__headers, proxies=self.__proxies)).status_code != 200
                 or (tries == 5)
         ):
-            # TODO добавить логгирование
-            logger.info(msg=(f'Count of requests: {self.__request_counter}, '
-                             f'get status_code={http.status_code}, '
-                             f'{tries} try to solve by changing IP'))
+            logger.error(msg=(f'Count of requests: {self.__request_counter}, '
+                              f'get status_code={http.status_code}, '
+                              f'{tries} try to solve by changing IP'))
             self._change_ip()
             self.__request_counter = 0
             tries += 1
