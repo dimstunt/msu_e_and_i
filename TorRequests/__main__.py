@@ -1,15 +1,21 @@
 __author__ = 'dimstunt'
 
 import csv
-
-from TorRequests.ShikimoryParser import ShikimoriParser
+import logging
+from TorRequests.ShikimoryParser import ShikimoryParser
 
 PAGE_NUM_FIRST = 1
 PAGE_NUM_LAST = 704
 
 
 def main():
-    shikimori_parser = ShikimoriParser()
+    module_logger = logging.getLogger("TorRequests.ConnectionManager")
+    module_logger.setLevel(logging.INFO)
+    fh = logging.FileHandler("ConnectionManager.log")
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    fh.setFormatter(formatter)
+    module_logger.addHandler(fh)
+    shikimori_parser = ShikimoryParser()
     anime_list = []
     bad_html_list = []
 

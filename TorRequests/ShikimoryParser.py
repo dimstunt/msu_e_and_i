@@ -2,17 +2,18 @@
 __author__ = 'dimstunt'
 
 from bs4 import BeautifulSoup
-
+import logging
 # logger
 # ipdb
 from TorRequests.ConnectionManager import ConnectionManager
 
+module_logger = logging.getLogger("TorRequests.ShikimoryParser")
 
-class ShikimoriParser(ConnectionManager):
+
+class ShikimoryParser(ConnectionManager):
     def __init__(self):
         super().__init__()
-        self.cm = ConnectionManager()
-        self.cm._change_ip()
+        self._change_ip()
 
     def parse_anime_list(self, pn):
         """
@@ -21,13 +22,14 @@ class ShikimoriParser(ConnectionManager):
         :param pn: номер страницы для парсинга
         :return: dict с названием аниме и ссылкой на ее страницу
         """
+        logger = logging.getLogger("TorRequests.ShikimoryParser.parse_anime_list")
         site = 'https://shikimori.one/animes/page/'
         if pn < 1 or pn > 704:
-            print("error in parse_anime_list: wrong list_num")
+            logger.error(msg=f'error in parse_anime_list: wrong list_num {pn}')
             return None
         # TODO обработать ошибку
         al = []
-        r = self.cm.request('{site}{page_num}'.format(site=site, page_num=pn))
+        r = self.request(f'{site}{pn}')
         html = BeautifulSoup(r.content, 'html.parser')
         # TODO убрать html из класса после отладки
         try:
@@ -41,7 +43,7 @@ class ShikimoriParser(ConnectionManager):
                     kv['href'] = href['href'].replace(u'\xa0', u' ').strip('')
                 al.append(kv)
         except Exception as e:
-            print("\terror in {site}{page}: {e}".format(e=e, site=site, page=pn))
+            logger.error(msg=f'error in {site}{pn}: {e}')
             # TODO обработать ошибки
         return html, al
 
@@ -53,7 +55,7 @@ class ShikimoriParser(ConnectionManager):
         """
         if url is None:
             return None
-        r = self.cm.request(url)
+        r = self.request(url)
         html = BeautifulSoup(r.content, 'html.parser')
         kv = {}
         for line in html.select('.line-container'):
