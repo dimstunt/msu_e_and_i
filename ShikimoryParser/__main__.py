@@ -52,7 +52,7 @@ def main():
     keys = set()
     for anime in anime_list:
         keys = keys.union(anime.keys())
-    with open('shikimori_list.tsv', 'w') as output_file:
+    with open('shikimory_list.tsv', 'w') as output_file:
         dict_writer = csv.DictWriter(output_file, keys)
         dict_writer.writeheader()
         dict_writer.writerows(anime_list)
@@ -69,7 +69,7 @@ def main():
     keys = set()
     for anime in anime_list:
         keys = keys.union(anime.keys())
-    with open('shikimori_res.tsv', 'w') as output_file:
+    with open('shikimory_res.tsv', 'w') as output_file:
         dict_writer = csv.DictWriter(output_file, keys)
         dict_writer.writeheader()
         dict_writer.writerows(anime_list)
