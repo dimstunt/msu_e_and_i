@@ -3,14 +3,10 @@ __author__ = 'dimstunt'
 
 from bs4 import BeautifulSoup
 import logging
-# logger
-# ipdb
-from TorRequests.ConnectionManager import ConnectionManager
-
-module_logger = logging.getLogger("TorRequests.ShikimoryParser")
+from ConnectionManager import ConnectionManager
 
 
-class ShikimoryParser(ConnectionManager):
+class ShikimoryParser(ConnectionManager.ConnectionManager):
     def __init__(self):
         super().__init__()
         self._change_ip()
@@ -22,7 +18,7 @@ class ShikimoryParser(ConnectionManager):
         :param pn: номер страницы для парсинга
         :return: dict с названием аниме и ссылкой на ее страницу
         """
-        logger = logging.getLogger("TorRequests.ShikimoryParser.parse_anime_list")
+        logger = logging.getLogger("ShikimoryParser.parse_anime_list")
         site = 'https://shikimori.one/animes/page/'
         if pn < 1 or pn > 704:
             logger.error(msg=f'error in parse_anime_list: wrong list_num {pn}')

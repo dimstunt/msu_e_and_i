@@ -2,27 +2,21 @@ __author__ = 'dimstunt'
 
 import csv
 import logging
-from TorRequests.ShikimoryParser import ShikimoryParser
+import ShikimoryParser
 
 PAGE_NUM_FIRST = 1
 PAGE_NUM_LAST = 704
 
 
 def main():
-    module_logger = logging.getLogger("TorRequests.ConnectionManager")
-    module_logger.setLevel(logging.INFO)
-    fh = logging.FileHandler("ConnectionManager.log")
-    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    fh.setFormatter(formatter)
-    module_logger.addHandler(fh)
-    shikimori_parser = ShikimoryParser()
+    shikimory_parser = ShikimoryParser.ShikimoryParser()
     anime_list = []
     bad_html_list = []
 
     print("Парсим страницы со списком аниме")
     for page_num in range(PAGE_NUM_FIRST, PAGE_NUM_LAST + 1):
         print("Страница: {page_num} из {page_num_last}".format(page_num=page_num, page_num_last=PAGE_NUM_LAST))
-        res_html, res_json_list = shikimori_parser.parse_anime_list(page_num)
+        res_html, res_json_list = shikimory_parser.parse_anime_list(page_num)
         bad_html_cnt = 0
         for res_json in res_json_list:
             if 'href' not in res_json.keys():
@@ -54,7 +48,7 @@ def main():
 
     for id_anime, anime in enumerate(anime_list):
         print('Аниме №{id_anime} из {len_anime}'.format(id_anime=id_anime + 1, len_anime=len_anime))
-        res_html, res_json = shikimori_parser.parse_anime(anime['href'])
+        res_html, res_json = shikimory_parser.parse_anime(anime['href'])
         # TODO обработать res_html
         anime.update(res_json)
 
