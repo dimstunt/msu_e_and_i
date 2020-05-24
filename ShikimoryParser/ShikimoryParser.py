@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 __author__ = 'dimstunt'
 
-from bs4 import BeautifulSoup
 import logging
+
+from bs4 import BeautifulSoup
+
 from ConnectionManager import ConnectionManager
 
 module_logger = logging.getLogger('ShikimoryParser')

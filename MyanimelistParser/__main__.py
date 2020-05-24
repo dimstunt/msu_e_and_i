@@ -2,9 +2,11 @@ __author__ = 'dimstunt'
 
 import csv
 import logging
-import MyanimelistParser
 import os
 import shutil
+
+import MyanimelistParser
+
 PAGE_NUM_FIRST = 0
 PAGE_NUM_LAST = 334
 
@@ -47,4 +49,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 __author__ = 'dimstunt'
 
-from bs4 import BeautifulSoup
 import logging
+
+from bs4 import BeautifulSoup
+
 from ConnectionManager import ConnectionManager
 
 module_logger = logging.getLogger('MyanimelistParser')
@@ -17,7 +19,7 @@ class MyanimelistParser(ConnectionManager.ConnectionManager):
     def __init__(self):
         super().__init__()
         self._change_ip()
-#
+
     def parse_anime_list(self, pn):
         """
         Парсит список аниме со страницы https://shikimori.one/animes/page/{page_num}
@@ -32,7 +34,7 @@ class MyanimelistParser(ConnectionManager.ConnectionManager):
             logger.error(msg=f'error in parse_anime_list: wrong list_num {pn}')
             return None
         al = []
-        r = self.request(f'{site}{pn*50}')
+        r = self.request(f'{site}{pn * 50}')
         html = BeautifulSoup(r.content, 'html.parser')
         try:
             for el in html.select('.ranking-list'):

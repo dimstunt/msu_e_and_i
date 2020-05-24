@@ -2,9 +2,11 @@ __author__ = 'dimstunt'
 
 import csv
 import logging
-import ShikimoryParser
 import os
 import shutil
+
+import ShikimoryParser
+
 PAGE_NUM_FIRST = 1
 PAGE_NUM_LAST = 704
 

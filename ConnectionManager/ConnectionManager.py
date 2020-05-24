@@ -54,9 +54,7 @@ class ConnectionManager:
                 if tries != 0:
                     time.sleep(2)
                 controller.authenticate(password='dimstunt_local')
-                logger.info(msg='Success!')
                 controller.signal(Signal.NEWNYM)
-                logger.info(msg='New Tor connection processed')
                 controller.close()
                 self.__new_ip = self._check_ip()
                 tries += 1
