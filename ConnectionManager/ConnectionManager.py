@@ -37,6 +37,10 @@ class ConnectionManager:
         self.count_of_requests = count_of_requests
 
     def _check_ip(self):
+        """
+        Получает ip
+        :return: sting ip-адрес
+        """
         return requests.get('http://icanhazip.com', headers=self.__headers, proxies=self.__proxies).text.strip()
 
     def _change_ip(self):
@@ -59,7 +63,7 @@ class ConnectionManager:
                 self.__new_ip = self._check_ip()
                 tries += 1
             # TODO добавить обработку неудачи смены ip
-            logger.info(msg=f'Success, total {tries} tries')
+            logger.info(msg=f'Success, total {tries} tries, {self.__old_ip} >> {self.__new_ip}')
 
     def request(self, url):
         """

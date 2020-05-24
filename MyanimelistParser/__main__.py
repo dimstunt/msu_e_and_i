@@ -23,13 +23,13 @@ def main():
         shutil.rmtree('bad_html', ignore_errors=True)
     os.mkdir('bad_html')
 
-    shikimory_parser = MyanimelistParser.MyanimelistParser()
+    myanimelist_parser = MyanimelistParser.MyanimelistParser()
     anime_list = []
 
     logger.info(msg='Парсим страницы со списком аниме')
     logger.info(msg=f'Страницы с {PAGE_NUM_FIRST} по {PAGE_NUM_LAST}')
     for page_num in range(PAGE_NUM_FIRST, PAGE_NUM_LAST + 1):
-        res_html, res_json_list = shikimory_parser.parse_anime_list(page_num)
+        res_html, res_json_list = myanimelist_parser.parse_anime_list(page_num)
         anime_list.extend(res_json_list)
 
     len_anime = len(anime_list)
