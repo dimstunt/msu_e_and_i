@@ -1,17 +1,19 @@
 # -*- coding: utf-8 -*-
 __author__ = 'dimstunt'
 
+import time
+
 import requests
 from stem import Signal
 from stem.control import Controller
-import time
 
 
 class ConnectionManager:
     """
     Класс для создания запросов через tor
     """
-    def __init__(self, count_of_requests=50):
+
+    def __init__(self, count_of_requests=75):
         """
         Инициализирует сессию для отправки запросов через tor
         :param count_of_requests: количество запросов, после которого будет запрошен новый ip-адрес
@@ -71,10 +73,19 @@ class ConnectionManager:
                 or (tries == 5)
         ):
             # TODO добавить логгирование
-            print("Get status_code={error}, {tries} try to solve by changing IP"
-                  .format(error=http.status_code, tries=tries))
+            print(("Count of requests: {count}, "
+                   "get status_code={error}, "
+                   "{tries} try to solve by changing IP")
+                  .format(count=self.__request_counter, error=http.status_code, tries=tries))
             self._change_ip()
             self.__request_counter = 0
             tries += 1
         self.__request_counter += 1
         return http
+
+
+if __name__ == '__main__':
+    print("Testing changing ip")
+    cm = ConnectionManager(3)
+    for i in range(15):
+        print("{i} ip: {ip}".format(i=i, ip=cm.request("http://icanhazip.com/").text.strip()))
