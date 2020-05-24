@@ -37,7 +37,7 @@ class ConnectionManager:
         Функция меняет ip-адрес
         Если не удается за 10 попыток, останавливается
         """
-        logger = logging.getLogger('TorRequests.ConnectionManager._change_ip')
+        logger = logging.getLogger('ConnectionManager._change_ip')
         self.__old_ip = self.__new_ip
         self.__request_counter = 0
         tries = 0
@@ -63,7 +63,7 @@ class ConnectionManager:
         :param url: запрашиваемый URL, sting
         :return: класс Response
         """
-        logger = logging.getLogger('TorRequests.ConnectionManager.request')
+        logger = logging.getLogger('ConnectionManager.request')
         if self.__new_ip == '0.0.0.0':
             self.__new_ip = self._check_ip()
         if self.__request_counter >= self.count_of_requests:
