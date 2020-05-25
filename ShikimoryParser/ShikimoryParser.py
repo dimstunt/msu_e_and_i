@@ -82,8 +82,9 @@ class ShikimoryParser(ConnectionManager.ConnectionManager):
                             kv['episodes_cnt'] = value.text.replace(u'\xa0', u' ').strip()
                         elif key == 'Длительность эпизода':
                             val = value.text.replace(u'\xa0', u' ').strip()
-                            regex = re.search(r'(([0-9])+ часа? )?([0-9]+) мин', val).group(2, 3)
-                            kv['duration'] = int(regex[0] or 0) * 60 + int(regex[1])
+                            if regex := re.search(r'(([0-9])+ часа? )?([0-9]+) мин', val):
+                                dur = regex.group(2, 3)
+                                kv['duration'] = int(dur[0] or 0) * 60 + int(dur[1])
                         elif key == 'Статус':
                             val = value.text.replace(u'\xa0', u' ').strip()
                             if regex := re.search(r'в ([0-9]{4})-[0-9]+', val):
