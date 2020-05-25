@@ -39,6 +39,8 @@ def main():
     keys = set()
     for anime in anime_list:
         keys = keys.union(anime.keys())
+    keys = list(keys)
+    keys.sort()
     with open('myanimelist_res.csv', 'w') as output_file:
         dict_writer = csv.DictWriter(output_file, keys)
         dict_writer.writeheader()
