@@ -40,14 +40,17 @@ class ShikimoryParser(ConnectionManager.ConnectionManager):
         try:
             for el in html.select('.c-anime'):
                 kv = {'page_num': pn}
-                if title_en := el.select_one('.name-en'):
+                title_en = el.select_one('.name-en')
+                if title_en:
                     kv['title_en'] = ''.join(ch for ch in title_en.text.replace(u'\xa0', u' ')
                                              if ch.isalpha()
                                              or ch.isdigit()
                                              or ch.isspace()).lower()
-                if (title_ru := el.select_one('.name-ru')) and title_ru.has_attr('data-text'):
+                title_ru = el.select_one('.name-ru')
+                if title_ru and title_ru.has_attr('data-text'):
                     kv['name_rus'] = title_ru['data-text'].replace(u'\xa0', u' ').strip('')
-                if href := el.select_one('.cover'):
+                href = el.select_one('.cover')
+                if href:
                     if href.has_attr('href'):
                         kv['href'] = href['href'].replace(u'\xa0', u' ').strip('')
                     elif href.has_attr('data-href'):
@@ -70,28 +73,36 @@ class ShikimoryParser(ConnectionManager.ConnectionManager):
         kv = {}
         types = {'TV Сериал': 'TV', 'Фильм': 'Movie', 'Спешл': 'Special', 'Клип': 'Music'}
         for line in html.select('.line-container'):
-            if key := line.select_one('.key'):
+            key = line.select_one('.key')
+            if key:
                 # print("ключ ", [line.select_one('.key'), key])
-                if (key := key.text.replace(u'\xa0', u' ').strip(':')) not in ('Жанры', 'Альтернативные названия'):
+                key = key.text.replace(u'\xa0', u' ').strip(':')
+                if key not in ('Жанры', 'Альтернативные названия'):
                     # print("текст ключа ", key)
-                    if value := line.select_one('.value'):
+                    value = line.select_one('.value')
+                    if value:
                         if key == 'Тип':
-                            if (val := value.text.replace(u'\xa0', u' ').strip()) in types:
+                            val = value.text.replace(u'\xa0', u' ').strip()
+                            if val in types:
                                 kv['type'] = types[val]
                         elif key == 'Эпизоды':
                             kv['episodes_cnt'] = value.text.replace(u'\xa0', u' ').strip()
                         elif key == 'Длительность эпизода':
                             val = value.text.replace(u'\xa0', u' ').strip()
-                            if regex := re.search(r'(([0-9])+ часа? )?([0-9]+) мин', val):
+                            regex = re.search(r'(([0-9])+ часа? )?([0-9]+) мин', val)
+                            if regex:
                                 dur = regex.group(2, 3)
                                 kv['duration'] = int(dur[0] or 0) * 60 + int(dur[1])
                         elif key == 'Статус':
                             val = value.text.replace(u'\xa0', u' ').strip()
-                            if regex := re.search(r'в ([0-9]{4})-[0-9]+', val):
+                            if re.search(r'в ([0-9]{4})-[0-9]+', val):
+                                regex = re.search(r'в ([0-9]{4})-[0-9]+', val)
                                 kv['date_start'] = regex.group(1)
-                            elif regex := re.search(r'([0-9]{4}) г. по', val):
+                            elif re.search(r'([0-9]{4}) г. по', val):
+                                regex = re.search(r'([0-9]{4}) г. по', val)
                                 kv['date_start'] = regex.group(1)
-                            elif regex := re.search(r'([0-9]{4})', val):
+                            elif re.search(r'([0-9]{4})', val):
+                                regex = re.search(r'([0-9]{4})', val)
                                 kv['date_start'] = regex.group(1)
                         elif key == 'Рейтинг':
                             kv['rating'] = value.text.replace(u'\xa0', u' ').strip()
@@ -100,11 +111,13 @@ class ShikimoryParser(ConnectionManager.ConnectionManager):
                         elif key == 'Лицензировано':
                             kv['translator'] = value.text.replace(u'\xa0', u' ').strip()
                         # print([key, value, value.text])
-
-        if text_score := html.select_one('.text-score'):
-            if score_value := text_score.select_one('.score-value'):
+        text_score = html.select_one('.text-score')
+        if text_score:
+            score_value = text_score.select_one('.score-value')
+            if score_value:
                 kv['score_ru'] = score_value.text.replace(u'\xa0', u' ').strip()
-        if (val := html.select_one('.studio-logo')) and val.has_attr('alt'):
+        val = html.select_one('.studio-logo')
+        if val and val.has_attr('alt'):
             kv['creator'] = re.search(r'Аниме студии (.*)', val['alt'].replace(u'\xa0', u' ').strip()).group(1)
         # print(kv)
         return r.text, kv

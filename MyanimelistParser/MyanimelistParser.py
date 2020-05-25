@@ -39,13 +39,17 @@ class MyanimelistParser(ConnectionManager.ConnectionManager):
         try:
             for el in html.select('.ranking-list'):
                 kv = {'page_num': pn}
-                if detail := el.select_one('.detail'):
-                    if clearfix := detail.select_one('.clearfix'):
-                        if hoverinfo_trigger := clearfix.select_one('.hoverinfo_trigger'):
+                detail = el.select_one('.detail')
+                if detail:
+                    clearfix = detail.select_one('.clearfix')
+                    if clearfix:
+                        hoverinfo_trigger = clearfix.select_one('.hoverinfo_trigger')
+                        if hoverinfo_trigger:
                             kv['title_en'] = ''.join(ch for ch in hoverinfo_trigger.text if ch.isalpha()
                                                      or ch.isdigit()
                                                      or ch.isspace()).lower()
-                    if information := detail.select_one('.information'):
+                    information = detail.select_one('.information')
+                    if information:
                         params = information.text.split('\n')
                         if len(params) == 5:
                             kv['type'] = params[1].split('(')[0].strip()
@@ -54,8 +58,10 @@ class MyanimelistParser(ConnectionManager.ConnectionManager):
                             kv['date_start'] = ''.join(ch for ch in ds if ch.isdigit())
                             kv['date_end'] = ''.join(ch for ch in de if ch.isdigit())
                             kv['members'] = ''.join(ch for ch in params[3] if ch.isdigit())
-                if score := el.select_one('.score'):
-                    if score_label := score.select_one('.score-label'):
+                score = el.select_one('.score')
+                if score:
+                    score_label = score.select_one('.score-label')
+                    if score_label:
                         kv['score'] = score_label.text
                 al.append(kv)
         except Exception:

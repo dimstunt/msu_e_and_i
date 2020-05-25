@@ -79,15 +79,14 @@ class ConnectionManager:
             self._change_ip()
         tries = 1
         logger.info(msg=f'url: {url}')
-        while (
-                (http := requests.get(url, headers=self.__headers, proxies=self.__proxies)).status_code != 200
-                or (tries == 5)
-        ):
+        http = requests.get(url, headers=self.__headers, proxies=self.__proxies)
+        while http.status_code != 200 or (tries == 5):
             logger.error(msg=(f'Count of requests: {self.__request_counter}, '
                               f'get status_code={http.status_code}, '
                               f'{tries} try to solve by changing IP'))
             self._change_ip()
             self.__request_counter = 0
             tries += 1
+            http = requests.get(url, headers=self.__headers, proxies=self.__proxies)
         self.__request_counter += 1
         return http
