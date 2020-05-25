@@ -3,17 +3,22 @@ from abc import ABC
 from mrjob.job import MRJob
 from mrjob.protocol import RawValueProtocol
 
-keys = ['date_end',
+keys = ['creator',
         'date_start',
+        'duration',
         'episodes_cnt',
-        'members',
+        'href',
+        'name_rus',
+        'name_rus_official',
         'page_num',
-        'score',
+        'rating',
+        'score_ru',
         'title_en',
+        'translator',
         'type']
 
 
-class CsvParserMyanimelist(MRJob, ABC):
+class CsvParserShikimory(MRJob, ABC):
     """
     Класс для преобразования csv с Myanimelist в json
     """
@@ -57,4 +62,4 @@ class CsvParserMyanimelist(MRJob, ABC):
 
 
 if __name__ == '__main__':
-    CsvParserMyanimelist.run()
+    CsvParserShikimory.run()
