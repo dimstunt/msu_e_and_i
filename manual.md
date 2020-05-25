@@ -8,7 +8,10 @@
     * `tor --hash-password "dimstunt_local"`
     * полученный хеш скопировать вместо существующего в `HashedControlPassword`
 * Создать виртуальное окружение
-    * `python -m venv venv`
+    * `virtualenv venv`
     * `source ./venv/bin/activate`
     * `pip install -r requiments.txt`
     * `pip install 'requests[socks]'`
+* Установить `apache-spark`
+    * `brew cask install homebrew/cask-versions/adoptopenjdk8`
+    * `brew install apache-spark`
