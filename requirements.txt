@@ -1,0 +1,12 @@
+beautifulsoup4~=4.9.1
+bs4~=0.0.1
+certifi~=2020.4.5.1
+chardet~=3.0.4
+idna~=2.9
+PySocks~=1.7.1
+requests~=2.23.0
+soupsieve~=2.0.1
+stem~=1.8.0
+urllib3~=1.25.9
+pyspark~=2.4.5
+mrjob~=0.7.2
