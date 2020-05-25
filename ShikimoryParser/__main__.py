@@ -63,7 +63,8 @@ def main():
     logger.info(msg=f'Выкачка инфы о каждом тайтле')
 
     for id_anime, anime in enumerate(anime_list):
-        logger.info(msg=f'Аниме №{id_anime} из {len_anime}')
+        if id_anime % 50 == 49:
+            logger.info(msg=f'Аниме №{id_anime + 1} из {len_anime}')
         res_html, res_json = shikimory_parser.parse_anime(anime['href'])
         anime.update(res_json)
 

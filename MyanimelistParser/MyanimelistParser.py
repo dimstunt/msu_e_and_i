@@ -42,18 +42,21 @@ class MyanimelistParser(ConnectionManager.ConnectionManager):
                 if detail := el.select_one('.detail'):
                     if clearfix := detail.select_one('.clearfix'):
                         if hoverinfo_trigger := clearfix.select_one('.hoverinfo_trigger'):
-                            kv['en_name'] = ''.join(ch for ch in hoverinfo_trigger.text if ch.isalpha()
-                                                    or ch.isdigit()
-                                                    or ch.isspace()).lower()
+                            kv['title_en'] = ''.join(ch for ch in hoverinfo_trigger.text if ch.isalpha()
+                                                     or ch.isdigit()
+                                                     or ch.isspace()).lower()
                     if information := detail.select_one('.information'):
                         params = information.text.split('\n')
                         if len(params) == 5:
                             kv['type'] = params[1].split('(')[0].strip()
-                            kv['epizodes_cnt'] = ''.join(ch for ch in params[1].split('(')[1] if ch.isdigit())
+                            kv['episodes_cnt'] = ''.join(ch for ch in params[1].split('(')[1] if ch.isdigit())
                             ds, de = params[2].split('-')
                             kv['date_start'] = ''.join(ch for ch in ds if ch.isdigit())
                             kv['date_end'] = ''.join(ch for ch in de if ch.isdigit())
                             kv['members'] = ''.join(ch for ch in params[3] if ch.isdigit())
+                if score := el.select_one('.score'):
+                    if score_label := score.select_one('.score-label'):
+                        kv['score'] = score_label.text
                 al.append(kv)
         except Exception:
             logger.exception(msg=f'error in {site}{pn}')
